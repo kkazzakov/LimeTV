@@ -2,7 +2,7 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/constraintLayout"
+    android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/grey">
@@ -49,15 +49,15 @@
     </com.google.android.material.tabs.TabLayout>
 
     <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/constraintLayout5"
         android:layout_width="wrap_content"
         android:layout_height="0dp"
-        android:background="#232427"
+        android:background="@color/black"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="@+id/tabs"
         app:layout_constraintTop_toBottomOf="@+id/tabs">
+
         <ListView
-            android:id="@+id/channelsList"
+            android:id="@+id/channels"
             android:layout_width="fill_parent"
             android:layout_height="fill_parent"
             app:layout_constraintBottom_toBottomOf="parent"
