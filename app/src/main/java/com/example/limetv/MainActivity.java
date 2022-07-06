@@ -1,6 +1,7 @@
 package com.example.limetv;
 
 import android.app.ProgressDialog;
+import android.graphics.BitmapFactory;
 import android.os.Handler;
 import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
@@ -10,7 +11,10 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.IOException;
+import java.net.URL;
 import java.util.ArrayList;
+import java.util.concurrent.Executor;
+import java.util.concurrent.Executors;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -24,51 +28,54 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        new FetchJson().start();
+        setChannels();
 
         channelsAdapter = new ChannelsAdapter(MainActivity.this, channels);
         ListView lvMain = (ListView) findViewById(R.id.channels);
         lvMain.setAdapter(channelsAdapter);
     }
 
-    private class FetchJson extends Thread {
-        @Override
-        public void run() {
-            handler.post(new Runnable() {
-                @Override
-                public void run() {
-                    progressDialog = new ProgressDialog(MainActivity.this);
-                    progressDialog.setMessage("Loading");
-                    progressDialog.setCancelable(false);
-                    progressDialog.show();
-                }
+    private void setChannels() {
+        Executor channelLoader = Executors.newSingleThreadExecutor();
+        channelLoader.execute(() -> {
+            handler.post(() -> {
+                progressDialog = new ProgressDialog(MainActivity.this);
+                progressDialog.setMessage("Загрузка каналов");
+                progressDialog.setCancelable(false);
+                progressDialog.show();
             });
 
             try {
                 JSONObject json = JSONReader.getJson("https://limehd.online/playlist");
                 for (int i = 0; i < json.getJSONArray("channels").length(); i++) {
-                    JSONObject channel = json.getJSONArray("channels").getJSONObject(i);
+                    JSONObject jsonChannel = json.getJSONArray("channels").getJSONObject(i);
+                    Channel channel = new Channel(jsonChannel.getString("name_ru"));
+                    channel.isFavorite = false;
 
-                    if (!channel.isNull("current")) {
-                        channels.add(new Channel(channel.getString("name_ru"),
-                                channel.getJSONObject("current").getString("title"), false));
-                    } else {
-                        channels.add(new Channel(channel.getString("name_ru"), "-", false));
+                    Executors.newSingleThreadExecutor().execute(() -> {
+                        try {
+                            channel.image = BitmapFactory.decodeStream(new URL(jsonChannel.getString("image")).openStream());
+                        } catch (JSONException | IOException e) {
+                            e.printStackTrace();
+                        }
+                    });
+
+                    if (!jsonChannel.isNull("current")) {
+                        channel.currentShow = jsonChannel.getJSONObject("current").getString("title");
                     }
+
+                    channels.add(channel);
                 }
             } catch (IOException | JSONException e) {
                 e.printStackTrace();
             }
 
-            handler.post(new Runnable() {
-                @Override
-                public void run() {
-                    if (progressDialog.isShowing()) {
-                        progressDialog.dismiss();
-                    }
-                    channelsAdapter.notifyDataSetChanged();
+            handler.post(() -> {
+                if (progressDialog.isShowing()) {
+                    progressDialog.dismiss();
                 }
+                channelsAdapter.notifyDataSetChanged();
             });
-        }
+        });
     }
 }

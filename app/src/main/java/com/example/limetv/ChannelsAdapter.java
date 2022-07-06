@@ -5,6 +5,7 @@ import android.view.View;
 import android.content.Context;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.ToggleButton;
 
@@ -47,9 +48,7 @@ public class ChannelsAdapter extends BaseAdapter {
 
             ((TextView) view.findViewById(R.id.channelName)).setText(ch.name);
             ((TextView) view.findViewById(R.id.currentShow)).setText(ch.currentShow);
-
-
-
+            ((ImageView) view.findViewById(R.id.channel_pic)).setImageBitmap(ch.image);
 
 
         return view;

@@ -44,13 +44,13 @@
                     android:textStyle="bold" />
 
                 <TextView
-                    android:id="@+id/currentShow"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="12dp"
-                    android:text="текущая передача"
-                    android:textColor="@color/white"
-                    android:textSize="20sp" />
+                        android:id="@+id/currentShow"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="12dp"
+                        android:text="текущая передача"
+                        android:textColor="@color/currentShowTextColor"
+                        android:textSize="14sp"/>
 
             </LinearLayout>
 
