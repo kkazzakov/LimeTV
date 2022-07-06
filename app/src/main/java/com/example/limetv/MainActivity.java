@@ -5,47 +5,27 @@ import android.os.Bundle;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
+import java.util.ArrayList;
+
 public class MainActivity extends AppCompatActivity {
 
-    /*ListView l;
-    String tutorials[]
-            = { "1",
-            "1",
-            "2",
-            "3",
-            "4",
-            "5",
-            "6",
-            "7",
-            "8",
-            "9",
-            "10",
-            "11",
-            "12",
-            "13",
-            "14",
-            "15",
-            "16",
-            "17",
-            "18",
-            "19",
-            "20",
-            "21"
+    ArrayList<Channel> channels = new ArrayList<Channel>();
+    ChannelsAdapter channelsAdapter;
 
-    };
-    ArrayAdapter<String> adapter;*/
     @Override
     protected void onCreate(Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-       /* l = findViewById(R.id.channels);
-        adapter = new ArrayAdapter<String>(
-                this,
-                android.R.layout.simple_list_item_1,
-                tutorials
-        );
-        l.setAdapter(adapter);*/
+
+        for (int i = 1; i <= 20; i++) {
+            channels.add(new Channel("Первый канал","Жить здорово", false));
+        }
+        channelsAdapter = new ChannelsAdapter(this, channels);
+
+        ListView lvMain = (ListView) findViewById(R.id.channels);
+        lvMain.setAdapter(channelsAdapter);
+
 
 
     }
