@@ -13,6 +13,7 @@ import org.json.JSONObject;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.concurrent.Executor;
 import java.util.concurrent.Executors;
 
@@ -49,7 +50,8 @@ public class MainActivity extends AppCompatActivity {
                 JSONObject json = JSONReader.getJson("https://limehd.online/playlist");
                 for (int i = 0; i < json.getJSONArray("channels").length(); i++) {
                     JSONObject jsonChannel = json.getJSONArray("channels").getJSONObject(i);
-                    Channel channel = new Channel(jsonChannel.getString("name_ru"));
+                    Channel channel = new Channel(jsonChannel.getInt("number"),
+                            jsonChannel.getString("name_ru"));
                     channel.isFavorite = false;
 
                     Executors.newSingleThreadExecutor().execute(() -> {
@@ -65,6 +67,8 @@ public class MainActivity extends AppCompatActivity {
                     }
 
                     channels.add(channel);
+
+                    Collections.sort(channels);
                 }
             } catch (IOException | JSONException e) {
                 e.printStackTrace();
@@ -74,6 +78,7 @@ public class MainActivity extends AppCompatActivity {
                 if (progressDialog.isShowing()) {
                     progressDialog.dismiss();
                 }
+
                 channelsAdapter.notifyDataSetChanged();
             });
         });
