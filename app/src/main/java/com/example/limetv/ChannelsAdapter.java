@@ -5,32 +5,36 @@ import android.view.View;
 import android.content.Context;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.Filter;
+import android.widget.Filterable;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.ToggleButton;
 
 import java.util.ArrayList;
+import java.util.List;
+import java.util.Locale;
 
-public class ChannelsAdapter extends BaseAdapter {
-    Context ctx;
-    LayoutInflater LInflater;
-    ArrayList<Channel> objects;
+public class ChannelsAdapter extends BaseAdapter implements Filterable {
+
+    private LayoutInflater LInflater;
+    private List<Channel> allChannels;
+    private List<Channel> filteredChannels;
+    private ChannelFilter channelFilter = new ChannelFilter();
 
     ChannelsAdapter(Context context, ArrayList<Channel> channels) {
-        ctx = context;
-        objects = channels;
-        LInflater = (LayoutInflater) ctx
-                .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        allChannels = channels;
+        filteredChannels = channels;
+        LInflater = LayoutInflater.from(context);
     }
 
     @Override
     public int getCount() {
-        return objects.size();
+        return filteredChannels.size();
     }
 
     @Override
     public Object getItem(int position) {
-        return objects.get(position);
+        return filteredChannels.get(position);
     }
 
     @Override
@@ -57,4 +61,41 @@ public class ChannelsAdapter extends BaseAdapter {
     Channel getChannel(int position) {
         return ((Channel) getItem(position));
     }
+
+    public Filter getFilter() {
+        return channelFilter;
+    }
+
+    private class ChannelFilter extends Filter {
+        @Override
+        protected FilterResults performFiltering(CharSequence charSequence) {
+            String filterString = charSequence.toString().toLowerCase();
+
+            FilterResults results = new FilterResults();
+
+            final List<Channel> list = allChannels;
+
+            int count = list.size();
+            final ArrayList<Channel> nlist = new ArrayList<Channel>(count);
+
+            Channel filterableChannel;
+            for (int i = 0; i < count; i++) {
+                filterableChannel = list.get(i);
+                if (filterableChannel.name.toLowerCase().contains(filterString)){
+                    nlist.add(filterableChannel);
+                }
+            }
+
+            results.values = nlist;
+            results.count = nlist.size();
+            return results;
+        }
+
+        @Override
+        protected void publishResults(CharSequence charSequence, FilterResults filterResults) {
+            filteredChannels = (ArrayList<Channel>) filterResults.values;
+            notifyDataSetChanged();
+        }
+    }
+
 }

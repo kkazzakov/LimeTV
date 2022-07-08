@@ -6,6 +6,8 @@ import android.os.Handler;
 import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
 import android.widget.ListView;
+import android.widget.SearchView;
+
 import com.example.limetv.util.JSONReader;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -34,6 +36,23 @@ public class MainActivity extends AppCompatActivity {
         channelsAdapter = new ChannelsAdapter(MainActivity.this, channels);
         ListView lvMain = (ListView) findViewById(R.id.channels);
         lvMain.setAdapter(channelsAdapter);
+
+        SearchView searchView = (SearchView) findViewById(R.id.searchView);
+
+        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String s) {
+                channelsAdapter.getFilter().filter(s.toString());
+                return false;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String s) {
+                channelsAdapter.getFilter().filter(s.toString());
+                return false;
+            }
+        });
+
     }
 
     private void setChannels() {
