@@ -3,6 +3,9 @@ package com.example.limetv;
 import android.app.ProgressDialog;
 import android.graphics.BitmapFactory;
 import android.os.Handler;
+import android.os.Looper;
+import android.view.View;
+import android.widget.ProgressBar;
 import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
 import android.widget.ListView;
@@ -16,15 +19,13 @@ import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.concurrent.Executor;
 import java.util.concurrent.Executors;
 
 public class MainActivity extends AppCompatActivity {
-
     ArrayList<Channel> channels = new ArrayList<>();
     ChannelsAdapter channelsAdapter;
-    Handler handler = new Handler();
-    ProgressDialog progressDialog;
+    Handler handler = new Handler(Looper.getMainLooper());
+    ProgressBar progressBar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -56,13 +57,10 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void setChannels() {
-        Executor channelLoader = Executors.newSingleThreadExecutor();
-        channelLoader.execute(() -> {
+        Executors.newSingleThreadExecutor().execute(() -> {
             handler.post(() -> {
-                progressDialog = new ProgressDialog(MainActivity.this);
-                progressDialog.setMessage("Загрузка каналов");
-                progressDialog.setCancelable(false);
-                progressDialog.show();
+                progressBar = (ProgressBar) findViewById(R.id.progressBar);
+                progressBar.setVisibility(View.VISIBLE);
             });
 
             try {
@@ -86,17 +84,15 @@ public class MainActivity extends AppCompatActivity {
                     }
 
                     channels.add(channel);
-
-                    Collections.sort(channels);
                 }
+
+                Collections.sort(channels);
             } catch (IOException | JSONException e) {
                 e.printStackTrace();
             }
 
             handler.post(() -> {
-                if (progressDialog.isShowing()) {
-                    progressDialog.dismiss();
-                }
+                progressBar.setVisibility(View.INVISIBLE);
 
                 channelsAdapter.notifyDataSetChanged();
             });

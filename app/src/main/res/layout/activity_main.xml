@@ -1,78 +1,90 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/main"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:background="@color/grey">
+                                                   xmlns:app="http://schemas.android.com/apk/res-auto"
+                                                   xmlns:tools="http://schemas.android.com/tools"
+                                                   android:id="@+id/main"
+                                                   android:layout_width="match_parent"
+                                                   android:layout_height="match_parent"
+                                                   android:background="@color/grey">
 
     <SearchView
-        android:id="@+id/searchView"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="24dp"
-        android:layout_marginTop="10dp"
-        android:layout_marginEnd="24dp"
-        android:background="@drawable/bg_rounded"
-        android:iconifiedByDefault="false"
-        android:queryBackground="@android:color/transparent"
-        android:queryHint="@string/search_bar_text"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+            android:id="@+id/searchView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="24dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginEnd="24dp"
+            android:background="@drawable/bg_rounded"
+            android:iconifiedByDefault="false"
+            android:queryBackground="@android:color/transparent"
+            android:queryHint="@string/search_bar_text"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"/>
 
     <com.google.android.material.tabs.TabLayout
 
-        android:id="@+id/tabs"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:background="#343438"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/searchView"
-        app:tabIndicatorColor="@color/blue"
-        app:tabIndicatorHeight="2dp"
-        app:tabMode="scrollable"
-        app:tabSelectedTextColor="@color/white"
-        app:tabTextColor="@color/light_grey">
-
-        <com.google.android.material.tabs.TabItem
-            android:id="@+id/tabItem1"
+            android:id="@+id/tabs"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/all" />
+            android:background="#343438"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/searchView"
+            app:tabIndicatorColor="@color/blue"
+            app:tabIndicatorHeight="2dp"
+            app:tabMode="scrollable"
+            app:tabSelectedTextColor="@color/white"
+            app:tabTextColor="@color/light_grey">
 
         <com.google.android.material.tabs.TabItem
-            android:id="@+id/tabItem2"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/favorites" />
+                android:id="@+id/tabItem1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/all"/>
+
+        <com.google.android.material.tabs.TabItem
+                android:id="@+id/tabItem2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/favorites"/>
     </com.google.android.material.tabs.TabLayout>
 
     <View
-        android:layout_width="match_parent"
-        android:layout_height="1dp"
-        android:background="#74768081"
-        app:layout_constraintBottom_toTopOf="@+id/constraintLayout"
-        app:layout_constraintEnd_toEndOf="parent" />
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="#74768081"
+            app:layout_constraintBottom_toTopOf="@+id/constraintLayout"
+            app:layout_constraintEnd_toEndOf="parent" android:id="@+id/view"/>
 
     <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/constraintLayout"
-        android:layout_width="wrap_content"
-        android:layout_height="0dp"
-        android:background="@color/black"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="@+id/tabs"
-        app:layout_constraintTop_toBottomOf="@+id/tabs">
-
-        <ListView
-            android:id="@+id/channels"
-            android:layout_width="fill_parent"
-            android:layout_height="fill_parent"
+            android:id="@+id/constraintLayout"
+            android:layout_width="wrap_content"
+            android:layout_height="0dp"
+            android:background="@color/black"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent">
+            app:layout_constraintStart_toStartOf="@+id/tabs"
+            app:layout_constraintTop_toBottomOf="@+id/tabs">
 
+        <ProgressBar
+                android:id="@+id/progressBar"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:indeterminate="true"
+                android:max="100"
+                android:backgroundTint="@color/grey"
+                style="@style/Widget.AppCompat.ProgressBar"
+                android:clickable="false"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent" android:visibility="invisible"/>
+        <ListView
+                android:id="@+id/channels"
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent" app:layout_constraintTop_toTopOf="parent">
         </ListView>
     </androidx.constraintlayout.widget.ConstraintLayout>
 
